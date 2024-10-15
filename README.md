@@ -10,10 +10,10 @@ Comment j'ai fait pour me connecter en ssh:
 SUR LA MACHINE VIRTUELLE:
  -on recherche les paquets a mettre a jours avec::apt update
  -si il y en a mettre à jours, alors:: apt upgrade
- -ensuite on recherche les paquets pour instfaller le ssh avec::apt search ssh
+ -ensuite on recherche les paquets pour installer le ssh avec::apt search ssh
  -si rien n'est installé alors on peut l'installer avec::openssh-server
- -on demarre le serveur ssh avec: service ssh start
- -avec la commade::systemctl status ssh , nous pouvons verfiffier que le serveur est entrain de fonctionner avec le mot 'Active(running)' inscrit en Jaune.
+ -on demarre le serveur ssh avec ::service ssh start
+ -avec la commade ::systemctl status ssh , nous pouvons verfifier que le serveur est entrain de fonctionner avec le mot 'Active(running)' inscrit en Jaune.
 
  Pour mon cas tout cela fonctionner ensuite, sur mon terminal PowerShell de ma machine hôte
     -Pour se conneceter en ssh de la machine hôte sur la machine virtuelle, nous tapons:: ssh root@localhost -p2222  , le '-p2222' indique le port ou se trouver le ssh qui est 22 dans ce cas la 
@@ -30,15 +30,13 @@ SUR LA MACHINE VIRTUELLE:
   1.2)   Authentification par clef / Generation de clefs
 
   -D'abord, nous devons générer un couple de clés SSH
-Sur la machine hôte, aveec la commande suivante::ssh-keygen -t rsa -b 4096 , pour générer une paire de clés SSH (privée et publique) :
+Sur la machine hôte, aveec la commande suivante ::ssh-keygen -t rsa -b 4096 , pour générer une paire de clés SSH (privée et publique) :
 
   -Ensuite, on copie la clé publique sur le serveur pour permettre l'authentification sans mot de passe.
-Sur la machine hôte, exécutez cette commande::ssh-copy-id user@server_ip (remplacez user par votre nom d'utilisateur qui est ici'root' et adresse_ip par l'adresse IP du serveur)
+Sur la machine hôte, on execute cette commande::ssh-copy-id user@server_ip (on remplace user par le nom d'utilisateur qui est ici 'root' et adresse_ip par l'adresse IP du serveur)
 
 -Enfin, on se connecter avec la clé privée
-Après avoir copié la clé publique sur le serveur, on se connecte sans mot de passe. Utilisez simplement la commande SSH habituelle pour vous connecter :
-
-ssh root@adresse_ip
+Après avoir copié la clé publique sur le serveur, on se connecte sans mot de passe .:ssh root@adresse_ip
 
 1.3)
 
@@ -55,12 +53,12 @@ chmod 600 /root/.ssh/authorized_keys
 
 
 -Ajout de la clé publique
-Vous avez ajouté votre clé publique dans le fichier authorized_keys pour permettre l'authentification par clé :: echo "votre_clé_publique" >> /root/.ssh/authorized_keys
+on ajoute la clé publique dans le fichier authorized_keys pour permettre l'authentification par clé:: echo "votre_clé_publique" >> /root/.ssh/authorized_keys
 
-Cette commande a ajouté votre clé publique au fichier authorized_keys.
+Cette commande a ajouté la clé publique au fichier authorized_keys.
 
-- Enfin, on testé la connexion SSH pour vous assurer que l'authentification par clé fonctionne sans mot de passe :: ssh root@10.0.2.15
-Le test a été réussi, confirmant que la configuration est correcte.
+- Enfin, on teste la connexion SSH pour vous assurer que l'authentification par clé fonctionne sans mot de passe ::ssh root@10.0.2.15
+Le test a été réussi, confirmant que la configuration.
 
 
 1.4)
@@ -82,27 +80,27 @@ Ce processus est souvent automatisé à l'aide de scripts ou d'outils capables d
   L'attaquant utilise un outil de brute-force pour tester les mots de passe sur le serveur de l'entrerpise. Il cible le port SSH par défaut (port 22) et commence à tester des milliers de combinaisons.
 
 
-
-
 -Trouvez et expliquez d’autres techniques permettant `a l’administrateur du serveur de ce prot´eger de ce type
 d’attaques::
 
 1. Limiter les tentatives de connexion avec fail2ban
-Principe : fail2ban surveille les tentatives de connexion échouées et bloque temporairement l'adresse IP après un certain nombre d'échecs. Cela permet d'arrêter les tentatives de brute-force après quelques essais.
+Fail2ban surveille les tentatives de connexion échouées et bloque temporairement l'adresse IP après un certain nombre d'échecs. Cela permet d'arrêter les tentatives de brute-force après quelques essais.
 Avantages :
 Bloque efficacement les attaques brute-force.
-Personnalisable (vous pouvez définir combien de tentatives sont autorisées avant le blocage, ainsi que la durée du blocage).
+
 Inconvénients :
 Si un utilisateur légitime fait trop d'erreurs de connexion, il peut être bloqué temporairement.
-Peut ne pas être suffisant contre des attaques distribuées provenant de plusieurs adresses IP.
+
+ca ne peut pas être suffisant contre des attaques distribuées provenant de plusieurs adresses IP.
 Conclusion : C'est une excellente mesure pour empêcher les attaques en cours, mais il peut être nécessaire de l'utiliser avec d'autres techniques pour une sécurité optimale.
 
 
 2. Utiliser un pare-feu pour restreindre l'accès SSH
-Principe : Un pare-feu comme ufw (Uncomplicated Firewall) ou iptables peut être utilisé pour limiter l'accès au serveur SSH à des adresses IP spécifiques (par exemple, celles des employés ou des administrateurs).
+Principe : Un pare-feu comme ufw (Uncomplicated Firewall) peut être utilisé pour limiter l'accès au serveur SSH à des adresses IP spécifiques (par exemple, celles des employés ou des administrateurs).
 Avantages :
 Réduit fortement les risques d'attaques si vous limitez l'accès uniquement aux adresses IP autorisées.
 Excellente mesure pour les entreprises dont les employés ou administrateurs ont des adresses IP fixes.
+
 Inconvénients :
 Si l'adresse IP d'un utilisateur légitime change ou qu'il doit se connecter depuis un autre emplacement, il ne pourra pas se connecter à moins que son IP soit ajoutée manuellement.
 Conclusion : Très efficace dans un environnement contrôlé (comme une entreprise), mais peu pratique si les utilisateurs ont des IP dynamiques ou doivent accéder au serveur depuis plusieurs endroits.
@@ -118,18 +116,21 @@ Conclusion : Très efficace dans un environnement contrôlé (comme une entrepri
 TIME représente le temps processeur cumulé utilisé par le processus depuis son démarrage.
 
 -Quel est le processus avant le plus utilisé sur votre machine ?
-Pour trouver ce processus, regardez la colonne %CPU et identifiez le processus avec le pourcentage le plus élevé.
+Pour trouver ce processus, on regarde la colonne %CPU et identifiez le processus avec le pourcentage le plus élevé.
 
 -Quel a été le premier processus lancé après le démarrage du système ?
-Utilisez la commande ps -eo pid,comm,etime --sort=etime pour afficher les processus triés par leur temps de fonctionnement. Le premier de la liste est probablement le premier processus lancé après le démarrage.
+la commande::ps -eo pid,comm,etime --sort=etime pour afficher les processus triés par leur temps de fonctionnement. Le premier de la liste est probablement le premier processus lancé après le démarrage.
+
+-> ici c'est 'systemd'
 
 -À quelle heure votre machine a-t-elle démarré ?
-Utilisez la commande uptime pour afficher le temps écoulé depuis le démarrage de la machine, ou who -b pour obtenir l'heure exacte du dernier démarrage.
+la commande::who -b pour obtenir l'heure exacte du dernier démarrage.
+-> dans ce cas là '2024-10-15 16:51'
 
 -Pouvez-vous établir le nombre approximatif de processus créés depuis le démarrage ?
 La commande ps -e --no-headers | wc -l permet d'afficher le nombre total de processus actifs sur la machine.
 
-
+-> ici il y en a 107
 
 
 2. Relation entre processus et processus parent (PPID)
@@ -139,7 +140,7 @@ Trouver une option pour afficher le PPID d'un processus ::ps -eo pid,ppid,comm  
 Liste des processus ancêtres ::pstree -p <PID>, qui montre un arbre des processus.
 
 
-4. Utilisation de la commande top
+3. Utilisation de la commande top
 
 
 Questions :
